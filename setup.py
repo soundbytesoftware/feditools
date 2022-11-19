@@ -10,7 +10,7 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
-    packages=find_packages(exclude="test"),
+    packages=find_packages(exclude=["test", "test.*"]),
     python_requires=">=3.7, <4",
     install_requires=[
         "urllib3==2.0.0a1",
