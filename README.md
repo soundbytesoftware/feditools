@@ -19,15 +19,29 @@ $ pip install --pre feditools
 ### Get node info
 
 ```bash
-$ python -m feditools.nodeinfo soundbyte.social
-# NodeInfo version 2.0
-software: mastodon 4.0.1
-protocols: activitypub
-services:
-  inbound:
-  outbound:
-open registrations: False
-usage: {'users': {'total': 2, 'activeMonth': 2, 'activeHalfyear': 2},
-  'localPosts': 102}
-metadata:
+$ python -m feditools.nodeinfo mastodon.social
+{
+  "version": "2.0",
+  "software": {
+    "name": "mastodon",
+    "version": "4.0.2"
+  },
+  "protocols": [
+    "activitypub"
+  ],
+  "services": {
+    "outbound": [],
+    "inbound": []
+  },
+  "openRegistrations": false,
+  "usage": {
+    "users": {
+      "total": 879403,
+      "activeMonth": 245520,
+      "activeHalfyear": 422601
+    },
+    "localPosts": 42641202
+  },
+  "metadata": {}
+}
 ```

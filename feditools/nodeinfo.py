@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from argparse import ArgumentParser
-from json import JSONDecodeError
+from json import JSONDecodeError, dumps
 from os import linesep
 from textwrap import wrap
 
@@ -72,20 +72,16 @@ class NodeInfo:
                 f"open_registrations={self.open_registrations!r}, usage={self.usage!r}, metadata={self.metadata!r})")
 
     def __str__(self):
-        lines = [
-            f"# NodeInfo version {self.version}",
-            f"software: {self.software['name']} {self.software['version']}",
-        ]
-        lines.extend(wrap("protocols: {}".format(", ".join(self.protocols)), subsequent_indent="  "))
-        lines.append("services:")
-        lines.extend(wrap("  inbound: {}".format(", ".join(self.services["inbound"])), subsequent_indent="    "))
-        lines.extend(wrap("  outbound: {}".format(", ".join(self.services["outbound"])), subsequent_indent="    "))
-        lines.append(f"open registrations: {self.open_registrations}")
-        lines.extend(wrap(f"usage: {self.usage}", subsequent_indent="  "))
-        lines.append("metadata:")
-        lines.extend(wrap("  {}".format(", ".join(f"{key}={value}" for key, value in self.metadata.items())),
-                          subsequent_indent="    ", break_on_hyphens=False))
-        return linesep.join(lines)
+        return dumps(dict(iter(self)), indent="  ")
+
+    def __iter__(self):
+        yield "version", self.version
+        yield "software", self.software
+        yield "protocols", self.protocols
+        yield "services", self.services
+        yield "openRegistrations", self.open_registrations
+        yield "usage", self.usage
+        yield "metadata", self.metadata
 
 
 def main():
