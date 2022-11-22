@@ -2,8 +2,6 @@
 
 from argparse import ArgumentParser
 from json import JSONDecodeError, dumps
-from os import linesep
-from textwrap import wrap
 
 from urllib3 import PoolManager as HTTP
 
