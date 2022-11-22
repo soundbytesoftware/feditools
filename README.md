@@ -16,7 +16,7 @@ $ pip install --pre feditools
 
 ## Usage
 
-### Get node info
+### NodeInfo
 
 ```bash
 $ python -m feditools.nodeinfo mastodon.social
@@ -43,5 +43,34 @@ $ python -m feditools.nodeinfo mastodon.social
     "localPosts": 42641202
   },
   "metadata": {}
+}
+```
+
+### WebFinger
+
+```bash
+$ python -m feditools.webfinger soundbyte.social nigel
+{
+  "subject": "acct:nigel@soundbyte.social",
+  "aliases": [
+    "https://soundbyte.social/@nigel",
+    "https://soundbyte.social/users/nigel"
+  ],
+  "links": [
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://soundbyte.social/@nigel"
+    },
+    {
+      "rel": "self",
+      "type": "application/activity+json",
+      "href": "https://soundbyte.social/users/nigel"
+    },
+    {
+      "rel": "http://ostatus.org/schema/1.0/subscribe",
+      "template": "https://soundbyte.social/authorize_interaction?uri={uri}"
+    }
+  ]
 }
 ```
