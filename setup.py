@@ -17,6 +17,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
+            "nodeinfo=feditools.nodeinfo:main",
             "webfinger=feditools.webfinger:main",
         ],
     },

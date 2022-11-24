@@ -3,7 +3,7 @@
 """
 RFC5988
 
-See https://www.rfc-editor.org/rfc/rfc5988
+See https://datatracker.ietf.org/doc/html/rfc5988
 """
 
 

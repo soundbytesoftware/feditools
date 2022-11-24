@@ -18,13 +18,15 @@ $ pip install --pre feditools
 
 ### NodeInfo
 
+The `nodeinfo` command provides an entry point into the `feditools.nodeinfo` module.
+
 ```bash
-$ python -m feditools.nodeinfo mastodon.social
+$ nodeinfo soundbyte.social
 {
   "version": "2.0",
   "software": {
     "name": "mastodon",
-    "version": "4.0.2"
+    "version": "4.0.1"
   },
   "protocols": [
     "activitypub"
@@ -36,11 +38,11 @@ $ python -m feditools.nodeinfo mastodon.social
   "openRegistrations": false,
   "usage": {
     "users": {
-      "total": 879403,
-      "activeMonth": 245520,
-      "activeHalfyear": 422601
+      "total": 2,
+      "activeMonth": 2,
+      "activeHalfyear": 2
     },
-    "localPosts": 42641202
+    "localPosts": 106
   },
   "metadata": {}
 }
@@ -48,29 +50,14 @@ $ python -m feditools.nodeinfo mastodon.social
 
 ### WebFinger
 
+The `webfinger` command provides an entry point into the `feditools.webfinger` module.
+
 ```bash
-$ python -m feditools.webfinger soundbyte.social nigel
-{
-  "subject": "acct:nigel@soundbyte.social",
-  "aliases": [
-    "https://soundbyte.social/@nigel",
-    "https://soundbyte.social/users/nigel"
-  ],
-  "links": [
-    {
-      "rel": "http://webfinger.net/rel/profile-page",
-      "type": "text/html",
-      "href": "https://soundbyte.social/@nigel"
-    },
-    {
-      "rel": "self",
-      "type": "application/activity+json",
-      "href": "https://soundbyte.social/users/nigel"
-    },
-    {
-      "rel": "http://ostatus.org/schema/1.0/subscribe",
-      "template": "https://soundbyte.social/authorize_interaction?uri={uri}"
-    }
-  ]
-}
+$ webfinger nigel@soundbyte.social
+Subject: acct:nigel@soundbyte.social
+Aliases: https://soundbyte.social/@nigel
+         https://soundbyte.social/users/nigel
+Links: https://soundbyte.social/@nigel (rel=http://webfinger.net/rel/profile-page)
+       https://soundbyte.social/users/nigel (rel=self)
+       https://soundbyte.social/authorize_interaction?uri={uri} (rel=http://ostatus.org/schema/1.0/subscribe)
 ```

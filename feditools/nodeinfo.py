@@ -1,21 +1,25 @@
 #!/usr/bin/env python
 
+"""
+This module provides an implementation of the NodeInfo
+protocol, as described at https://github.com/jhass/nodeinfo/.
+"""
+
 from argparse import ArgumentParser
 from json import JSONDecodeError, dumps
 
 from urllib3 import PoolManager as HTTP
 
-from feditools.activity.streams import Link
+from feditools.webmetadata import JRD
 
 
 class NodeInfo:
     """
-    See: https://github.com/jhass/nodeinfo/
     """
 
     @classmethod
-    def _get_links(cls, host):
-        # returns the links to the node info itself
+    def discover(cls, host):
+        # returns a JRD document containing the links to the node info itself
         # https://github.com/jhass/nodeinfo/blob/main/PROTOCOL.md
         http = HTTP()
         rs = http.request("GET", f"https://{host}/.well-known/nodeinfo")
@@ -24,12 +28,12 @@ class NodeInfo:
         except JSONDecodeError:
             raise ValueError("Host does not export a well-known node info API")
         else:
-            return [Link.from_data(link_data) for link_data in data["links"]]
+            return JRD(data)
 
     @classmethod
     def get(cls, host):
         http = HTTP()
-        for link in cls._get_links(host):
+        for link in cls.discover(host).links:
             # TODO: check link.rel to know how to parse the response
             rs = http.request("GET", link.href)
             try:

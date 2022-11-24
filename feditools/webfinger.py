@@ -4,60 +4,19 @@
 This is an implementation of RFC 7033, which defines
 the WebFinger protocol. For the full specification,
 see https://datatracker.ietf.org/doc/html/rfc7033.
-
-The acct URI scheme:
-https://datatracker.ietf.org/doc/html/rfc7565
-
-RFC 6415: resource descriptors
 """
 
 from argparse import ArgumentParser
 from json import JSONDecodeError
-from os import linesep
 
 from urllib3 import PoolManager as HTTP
 
-from feditools.weblinking import Link
-
-
-class ResourceDescriptor:
-    """ RFC 6415
-    """
-
-    @classmethod
-    def from_json(cls, data):
-        return cls(data["subject"], data.get("aliases"), data.get("properties"), data.get("links"))
-
-    def __init__(self, subject, aliases, properties, links):
-        self.subject = subject
-        self.aliases = aliases
-        self.properties = properties
-        self.links = [Link(self.subject, **link) for link in links]
-
-    def __str__(self):
-        lines = [f"Subject: {self.subject}"]
-        if self.aliases:
-            for i, alias in enumerate(self.aliases):
-                if i == 0:
-                    lines.append(f"Aliases: {alias}")
-                else:
-                    lines.append(f"         {alias}")
-        if self.properties:
-            for i, (name, value) in enumerate(self.properties.items()):
-                if i == 0:
-                    lines.append(f"Properties: {name} = {value!r}")
-                else:
-                    lines.append(f"            {name} = {value!r}")
-        if self.links:
-            for i, link in enumerate(self.links):
-                if i == 0:
-                    lines.append(f"Links: {link.href or link['template'] or ''} (rel={link.rel})")
-                else:
-                    lines.append(f"       {link.href or link['template'] or ''} (rel={link.rel})")
-        return linesep.join(lines)
+from feditools.webmetadata import JRD
 
 
 def _parse_url(url):
+    # The acct URI scheme:
+    # https://datatracker.ietf.org/doc/html/rfc7565
     from urllib.parse import urlsplit
     # TODO: improve this and move it to a URI module
     # See: https://datatracker.ietf.org/doc/html/rfc7565 (The 'acct' URI Scheme)
@@ -90,7 +49,7 @@ def webfinger(resource, host=None, *rels):
         except JSONDecodeError:
             raise
         else:
-            return ResourceDescriptor.from_json(data)
+            return JRD(data)
     else:
         # TODO: better error handling
         raise OSError(rs.status)
