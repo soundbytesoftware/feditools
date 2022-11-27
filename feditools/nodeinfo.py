@@ -73,9 +73,6 @@ class NodeInfo:
                 f"protocols={self.protocols!r}, services={self.services!r}, "
                 f"open_registrations={self.open_registrations!r}, usage={self.usage!r}, metadata={self.metadata!r})")
 
-    def __str__(self):
-        return dumps(dict(iter(self)), indent="  ")
-
     def __iter__(self):
         yield "version", self.version
         yield "software", self.software
@@ -88,11 +85,12 @@ class NodeInfo:
 
 def main():
     parser = ArgumentParser()
+    parser.add_argument("-p", "--pretty", action="store_true")
     parser.add_argument("host")
     args = parser.parse_args()
     try:
         for info in NodeInfo.get(args.host):
-            print(info)
+            print(dumps(dict(iter(info)), indent=("  " if args.pretty else None)))
     except ValueError as e:
         print(f"{e}")
         exit(1)
